@@ -18,7 +18,7 @@ function App() {
       <CustomCursor />
       <div className='relative'>
       <div><Navigation/></div>
-      {/* <div><ProductSection/></div> */}
+      <div><ProductSection/></div>
         {/* <div><Homepage/></div> 
       <div><Homesection/></div>  */}
       {/* <Productdetails/> */}
