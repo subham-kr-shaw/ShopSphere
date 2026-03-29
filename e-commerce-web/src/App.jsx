@@ -7,7 +7,9 @@ import Navigation from './customer/components/navigation/Navigation'
 import ProductSection from './customer/components/Productsection/Productsection'
 import Productdetails from './customer/components/Productdetails/Productdetails'
 import Cartpage from './customer/components/add_to_cart/Cartpage'
-import Userdetails from './customer/components/userdetail/Userdetails'
+import Userdetails from './customer/components/userdetail/Deliveryaddress'
+import Address from './customer/components/userdetail/Address'
+import Webstepper from './customer/components/userdetail/Webstepper'
 
 
 function App() {
@@ -18,7 +20,9 @@ function App() {
       <CustomCursor />
       <div className='relative'>
       <div><Navigation/></div>
-      <div><ProductSection/></div>
+      {/* <div><Address/></div> */}
+      <Webstepper/>
+      {/* <div><ProductSection/></div> */}
         {/* <div><Homepage/></div> 
       <div><Homesection/></div>  */}
       {/* <Productdetails/> */}
