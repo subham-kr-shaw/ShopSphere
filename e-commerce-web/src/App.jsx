@@ -10,6 +10,11 @@ import Cartpage from './customer/components/add_to_cart/Cartpage'
 import Userdetails from './customer/components/userdetail/Deliveryaddress'
 import Address from './customer/components/userdetail/Address'
 import Webstepper from './customer/components/userdetail/Webstepper'
+import Filters from './customer/components/order/Filters'
+import Ordercart from './customer/components/order/Ordercart'
+import Order from './customer/components/order/Order'
+import Ordertracker from './customer/components/order/Ordertracker'
+import Orderhistorydetails from './customer/components/order/Orderhistorydetails'
 
 
 function App() {
@@ -21,12 +26,15 @@ function App() {
       <div className='relative'>
       <div><Navigation/></div>
       {/* <div><Address/></div> */}
-      <Webstepper/>
+      {/* <Webstepper/> */}
+      {/* <Filters/> */}
       {/* <div><ProductSection/></div> */}
         {/* <div><Homepage/></div> 
       <div><Homesection/></div>  */}
       {/* <Productdetails/> */}
       {/* <Cartpage/> */}
+      <Orderhistorydetails/>
+      {/* <Ordercart/> */}
       {/* <Userdetails/> */}
       <div><Footer/></div>
       </div>

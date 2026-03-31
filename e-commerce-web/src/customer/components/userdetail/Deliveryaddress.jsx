@@ -98,17 +98,33 @@
 // }
 
 // export default Deliveryaddress
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Address from './Address'
 import TextField from '@mui/material/TextField'
 
 const Deliveryaddress = () => {
+  const [data,setdata]=useState({});
+  const handlesubmit=(e)=>{
+    e.preventDefault();
+    const data=new FormData(e.currentTarget);
+    const data1={
+      address:data.get("address"),
+      state:data.get("state"),
+      zip:data.get("zip"),
+      phone:data.get("phone"),
+      citycode:data.get("citycode"),
+      firstname:data.get("firstname"),
+      lastname:data.get("lastname"),
+    }
+    setdata(data1);
+    console.log(data1);
+  }
   return (
     <div className="flex flex-col md:flex-row gap-6 items-start px-4 py-6">
 
       {/* Left - Address Card */}
       <div className="w-full md:w-[35%] border border-gray-300 rounded-lg h-[30.5rem] overflow-y-scroll p-4 flex-shrink-0">
-        <Address />
+        <Address props={data}/>
         <button
           type="button"
           className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg tracking-widest uppercase cursor-pointer"
@@ -119,7 +135,7 @@ const Deliveryaddress = () => {
 
       {/* Right - Delivery Form */}
       <div className="w-full md:flex-1 border border-gray-300 rounded-lg shadow-md p-6">
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handlesubmit}>
 
           {/* Row 1: First Name + Last Name */}
           <div className="flex gap-4">

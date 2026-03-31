@@ -75,10 +75,12 @@ import * as React from 'react';
 import { useLocation } from "react-router-dom";
 import Deliveryaddress from './Deliveryaddress';
 import Ordersummary from './Ordersummary';
+import Payment from './Payment';
 
-const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
+
 
 export default function Webstepper() {
+  const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
   const location = useLocation();
   const querysearch = new URLSearchParams(location.search);
   const step = Number(querysearch.get("step"));
@@ -161,6 +163,7 @@ export default function Webstepper() {
       <div className='mt-4 sm:mt-6'>
         {step == 2 && <Deliveryaddress />}
         {step == 3 && <Ordersummary />}
+        {step == 4 && < Payment/>}
       </div>
 
     </div>
