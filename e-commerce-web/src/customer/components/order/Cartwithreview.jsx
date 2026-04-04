@@ -20,7 +20,7 @@ const Cartwithreview = () => {
                             <h1 className='text-md'>Rate and Reviews</h1>
                         </div>
                     </div>
-                    <div></div>
+                    {/* <div></div> */}
                 </div>
             </div>
         </div>
