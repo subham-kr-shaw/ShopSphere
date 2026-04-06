@@ -1,6 +1,6 @@
 import React from 'react'
 import Address from './Address'
-import Cartpage from '../add_to_cart/Cartpage'
+import Cartpage from '../cart/Cartpage'
 
 const Ordersummary = () => {
   return (

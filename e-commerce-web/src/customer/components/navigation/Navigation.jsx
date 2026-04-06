@@ -17,11 +17,35 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import nav from './nav'
+import AuthModal from '../../Auth/AuthModal'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+  const [anchorE1, setanchorE1] = useState(null);
+  const openUserMenu = Boolean(true);
+  const jwt = localstorage.getItem("jwt");
 
+  const handleUserClick = (event) => {
+    setanchorE1(event.currentTarget);
+  }
+  const handleCloseUserMenu = (event) => {
+    setanchorE1(null);
+  }
+  const handleOpen = () => {
+    setOpenAuthModal(true);
+  }
+  const handleClose = () => {
+    setOpenAuthModal(false);
+  }
+
+  const handleCategoryClick = (category, section, item, close) => {
+    navigate(`/${category.id}/${section.id}/${item.id}`);
+    close();
+  }
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -229,9 +253,17 @@ export default function Navigation() {
                                     >
                                       {section.items.map((item) => (
                                         <li key={item.name} className="flex">
-                                          <a href={item.href} className="hover:text-gray-800">
+                                          {/* <a href={item.href} className="hover:text-gray-800">
                                             {item.name}
-                                          </a>
+                                          </a> */}
+                                          <p onClick={() => handleCategoryClick(
+                                            category,
+                                            section,
+                                            item,
+                                            close
+                                          )}
+                                          className='cursor-pointer hover:text-gray-800'
+                                          >{items.name}</p>
                                         </li>
                                       ))}
                                     </ul>
@@ -303,6 +335,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Rate from './Rate';
 import Maincarosel from '../Homecarosel/Maincarosel';
 import Homesectioncarosel from '../homesectioncardcarosel/Homesectioncarosel';
+import { useNavigate } from 'react-router-dom';
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
@@ -14,6 +15,10 @@ function classNames(...classes) {
 }
 
 export default function Productdetails() {
+    const navigate=useNavigate();
+    const handleaddtocart=()=>{
+      navigate(`/cart`)
+    }
     return (
         <>
             <div className="bg-gray-100">
@@ -148,6 +153,7 @@ export default function Productdetails() {
                                     {/* add to cart */}
                                     <button
                                         type="submit"
+                                        onClick={handleaddtocart}
                                         className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white homesection hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
                                     >
                                         Add to bag

@@ -1,6 +1,9 @@
 import React from 'react'
 
 const Pricedetails = ({ price, discount, total }) => {
+  const handlecheckout=()=>{
+    Navigate(`/checkout?step=2`)
+  }
   return (
     <div className="w-full md:w-80 h-full m-3 p-4 rounded-lg shadow-md bg-white border border-gray-200 md:sticky md:top-20">
       <div className="text-center font-semibold mb-3">Price Details</div>
@@ -23,6 +26,7 @@ const Pricedetails = ({ price, discount, total }) => {
 
       <button
         type="submit"
+        onClick={handlecheckout}
         className="mt-6 w-full rounded-md bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none"
       >
         Add to bag
