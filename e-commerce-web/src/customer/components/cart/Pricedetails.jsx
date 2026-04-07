@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Pricedetails = ({ price, discount, total }) => {
+  const navigate=useNavigate();
   const handlecheckout=()=>{
-    Navigate(`/checkout?step=2`)
+    navigate(`/checkout?step=2`)//webstepper.jsx
   }
   return (
     <div className="w-full md:w-80 h-full m-3 p-4 rounded-lg shadow-md bg-white border border-gray-200 md:sticky md:top-20">

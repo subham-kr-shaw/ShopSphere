@@ -1,10 +1,12 @@
 import React from 'react'
 import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
+import { useNavigate } from 'react-router-dom';
 
 
 const Ordercart = () => {
+    const navigate=useNavigate();
     return (
-        <div className='cursor-pointer homesection'>
+        <div onClick={()=>navigate(`/account/order${5}`)} className='cursor-pointer homesection'>
             <div className='flex flex-col md:flex-row md:justify-between p-3 border-rounded-lg shadow-2xl'>
                 <div className='flex space-x-2.5 w-full md:w-[20%] h-full'>
                     <img src='https://rukminim1.flixcart.com/image/612/612/xif0q/sari/s/u/t/free-matka-04-tejas-sarees-unstitched-original-imagj69c9yy4pcgh.jpeg?q=70' className='rounded-md w-20 h-20 md:w-[30%] md:h-[10%] m-1 object-cover'></img>
