@@ -1,6 +1,6 @@
 
 'use client'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Fragment, useState, useRef, useEffect } from 'react'
 import {
   Dialog,
@@ -27,10 +27,12 @@ import { deepPurple } from '@mui/material/colors'
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location=useLocation();
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorE1, setanchorE1] = useState(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+  const [authMode, setAuthMode] = useState("signin");
 
   // ✅ Fix 1: localStorage (capital S)
   const jwt = localStorage.getItem("jwt");
@@ -55,11 +57,16 @@ export default function Navigation() {
     setanchorE1(null);
     setUserMenuOpen(false);
   }
-  const handleOpen = () => {
+  // const handleOpen = () => {
+  //   setOpenAuthModal(true);
+  // }
+  const handleOpen = (mode) => {
+    setAuthMode(mode);
     setOpenAuthModal(true);
   }
   const handleClose = () => {
     setOpenAuthModal(false);
+    navigate('/');
   }
   const handleLogout = () => {
     localStorage.removeItem('jwt');
@@ -212,7 +219,7 @@ export default function Navigation() {
               )}
             </div>
 
-            <div className="border-t border-gray-200 px-4 py-6">
+            {/* <div className="border-t border-gray-200 px-4 py-6">
               <Link to="#" className="-m-2 flex items-center p-2">
                 <img
                   alt=""
@@ -222,7 +229,7 @@ export default function Navigation() {
                 <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
                 <span className="sr-only">, change currency</span>
               </Link>
-            </div>
+            </div> */}
           </DialogPanel>
         </div>
       </Dialog>
@@ -246,14 +253,18 @@ export default function Navigation() {
               </button>
 
               {/* Logo */}
+
               <div className="ml-4 flex lg:ml-0">
                 <span className="sr-only">Your Company</span>
-                <img
-                  alt=""
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                  className="h-8 w-auto"
-                />
+                <Link to="#">
+                  <img
+                    alt=""
+                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                    className="h-8 w-auto"
+                  />
+                </Link>
               </div>
+
 
               {/* Flyout menus */}
               <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -312,7 +323,7 @@ export default function Navigation() {
                                             category,
                                             section,
                                             item,
-                                            () => {}
+                                            () => { }
                                           )}
                                             className='cursor-pointer hover:text-gray-800'
                                           >{item.name}</p>
@@ -342,7 +353,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {jwt? (
+                  {jwt ? (
                     // ✅ Fix 2: replaced broken Popover.Button with a simple custom dropdown
                     <div className="relative" ref={userMenuRef}>
                       <Avatar
@@ -372,11 +383,20 @@ export default function Navigation() {
                   ) : (
                     // ✅ Fix 3: Sign in + Create account for guests
                     <>
-                      <button onClick={handleOpen} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                      {/* <button onClick={handleOpen} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                         Sign in
                       </button>
                       <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
                       <button onClick={handleOpen} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Create account
+                      </button> */}
+                      <button onClick={() => handleOpen("/signin")} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                        Sign in
+                      </button>
+
+                      <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
+
+                      <button onClick={() => handleOpen("/signup")} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                         Create account
                       </button>
                     </>
@@ -407,7 +427,8 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      <AuthModal handleClose={handleClose} open={openAuthModal} />
+      {/* <AuthModal handleClose={handleClose} open={openAuthModal} /> */}
+      <AuthModal handleClose={handleClose} open={openAuthModal} mode={authMode} />
     </div>
   )
 }

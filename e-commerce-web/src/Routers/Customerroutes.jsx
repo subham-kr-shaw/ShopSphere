@@ -17,6 +17,8 @@ const Customerroutes = () => {
                 <div><Navigation/></div>
             </div>
             <Routes>
+                <Route path='/signin' element={<Homepage />}></Route>
+                <Route path='/signup' element={<Homepage />}></Route>
                 <Route path='/' element={<Homepage />}></Route>
                 <Route path='/cart' element={<Cart />}></Route>
                 <Route path='/:levelone/:leveltwo/:levelthree' element={<Product/>}></Route>
