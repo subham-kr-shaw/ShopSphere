@@ -6,9 +6,12 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { Link } from 'react-router-dom'
+import { login } from '../../state/Auth/Action'
+import { useDispatch } from 'react-redux'
 
 const LoginForm = () => {
   const [submitted, setSubmitted] = useState(false)
+  const dispatch=useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -17,6 +20,7 @@ const LoginForm = () => {
       email:data.get("email"),
       password:data.get("password"),
     }
+    dispatch(login(user))
     console.log(user);
     setSubmitted(true)
   }

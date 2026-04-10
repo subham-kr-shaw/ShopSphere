@@ -1,14 +1,26 @@
 
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getuser, register } from '../../state/Auth/Action'
+import { store } from '../../state/store'
 
 const RegisterForm = () => {
   const [submitted, setSubmitted] = useState(false)
+  const dispatch=useDispatch();
+  const jwt=localStorage.getItem("jwt");
+  const {auth}=useSelector(store=>store);
+
+  useEffect(()=>{
+    if(jwt){
+      dispatch(getuser());
+    }
+  },[jwt,auth.jwt])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -19,6 +31,7 @@ const RegisterForm = () => {
       email:data.get("email"),
       password:data.get("password"),
     }
+    dispatch(register)
     console.log(user);
     setSubmitted(true)
   }
