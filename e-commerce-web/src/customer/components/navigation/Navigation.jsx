@@ -1,5 +1,4 @@
 
-'use client'
 import { Link, useLocation } from 'react-router-dom'
 import { Fragment, useState, useRef, useEffect } from 'react'
 import {
@@ -22,21 +21,45 @@ import AuthModal from '../../Auth/AuthModal'
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
 import { deepPurple } from '@mui/material/colors'
+import { useDispatch, useSelector } from 'react-redux'
+// import { logout } from '../../state/Auth/Action'
 
+// ✅ Correct
+// import { logout } from '../../../state/Auth/Action';
+import { logout, getuser } from '../../../state/Auth/Action';
 
 export default function Navigation() {
+  // 1. update import
+
+
+// 2. add useEffect after your existing useEffect
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const location=useLocation();
+  const location = useLocation();
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorE1, setanchorE1] = useState(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const [authMode, setAuthMode] = useState("signin");
+  const [authMode, setAuthMode] = useState("/signin");
 
-  // ✅ Fix 1: localStorage (capital S)
-  const jwt = localStorage.getItem("jwt");
-  const userName = localStorage.getItem("userName") || 'User';
+  const dispatch = useDispatch();
+  // ✅ Read from Redux — reacts instantly on logout/login
+  const auth = useSelector(store => store.auth);
+  const jwt = auth.jwt || localStorage.getItem("jwt");
+  const userName = auth.user?.firstname || auth.user?.name||'U';
+
+  console.log(userName);
+
+  // 1. update import
+
+
+// 2. add useEffect after your existing useEffect
+useEffect(() => {
+  if (jwt) {
+    dispatch(getuser());
+  }
+}, [jwt])
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -53,31 +76,34 @@ export default function Navigation() {
     setanchorE1(event.currentTarget);
     setUserMenuOpen((v) => !v);
   }
-  const handleCloseUserMenu = () => {
-    setanchorE1(null);
-    setUserMenuOpen(false);
-  }
-  // const handleOpen = () => {
-  //   setOpenAuthModal(true);
+
+  // const handleCloseUserMenu = () => {
+  //   setanchorE1(null);
+  //   setUserMenuOpen(false);
   // }
+
   const handleOpen = (mode) => {
     setAuthMode(mode);
     setOpenAuthModal(true);
   }
+
   const handleClose = () => {
+    setOpenAuthModal(false);
+  }
+
+  // ✅ Uses Redux logout — clears jwt from state instantly so buttons re-render
+  const handleLogout = () => {
+    dispatch(logout());
+    setUserMenuOpen(false);
     setOpenAuthModal(false);
     navigate('/');
   }
-  const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('userName');
-    setUserMenuOpen(false);
-    navigate('/');
-  }
+
   const goToProfile = () => {
     setUserMenuOpen(false);
     navigate('/profile');
   }
+
   const goToOrders = () => {
     setUserMenuOpen(false);
     navigate('/account/order');
@@ -138,13 +164,11 @@ export default function Navigation() {
                             src={item.imageSrc}
                             className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
                           />
-                          <a to={item.to} className="mt-6 block font-medium text-gray-900">
+                          <Link to={item.to} className="mt-6 block font-medium text-gray-900">
                             <span aria-hidden="true" className="absolute inset-0 z-10" />
                             {item.name}
-                          </a>
-                          <p aria-hidden="true" className="mt-1">
-                            Shop now
-                          </p>
+                          </Link>
+                          <p aria-hidden="true" className="mt-1">Shop now</p>
                         </div>
                       ))}
                     </div>
@@ -160,9 +184,9 @@ export default function Navigation() {
                         >
                           {section.items.map((item) => (
                             <li key={item.name} className="flow-root">
-                              <a to={item.to} className="-m-2 block p-2 text-gray-500">
+                              <Link to={item.to} className="-m-2 block p-2 text-gray-500">
                                 {item.name}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -176,14 +200,14 @@ export default function Navigation() {
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               {nav.pages.map((page) => (
                 <div key={page.name} className="flow-root">
-                  <a to={page.to} className="-m-2 block p-2 font-medium text-gray-900">
+                  <Link to={page.to} className="-m-2 block p-2 font-medium text-gray-900">
                     {page.name}
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>
 
-            {/* ✅ Mobile auth section */}
+            {/* Mobile auth section */}
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               {jwt ? (
                 <>
@@ -206,30 +230,18 @@ export default function Navigation() {
               ) : (
                 <>
                   <div className="flow-root">
-                    <button onClick={handleOpen} className="-m-2 block w-full text-left p-2 font-medium text-gray-900">
+                    <button onClick={() => handleOpen("/signin")} className="-m-2 block w-full text-left p-2 font-medium text-gray-900">
                       Sign in
                     </button>
                   </div>
                   <div className="flow-root">
-                    <button onClick={handleOpen} className="-m-2 block w-full text-left p-2 font-medium text-gray-900">
+                    <button onClick={() => handleOpen("/signup")} className="-m-2 block w-full text-left p-2 font-medium text-gray-900">
                       Create account
                     </button>
                   </div>
                 </>
               )}
             </div>
-
-            {/* <div className="border-t border-gray-200 px-4 py-6">
-              <Link to="#" className="-m-2 flex items-center p-2">
-                <img
-                  alt=""
-                  src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg"
-                  className="block h-auto w-5 shrink-0"
-                />
-                <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
-                <span className="sr-only">, change currency</span>
-              </Link>
-            </div> */}
           </DialogPanel>
         </div>
       </Dialog>
@@ -253,10 +265,9 @@ export default function Navigation() {
               </button>
 
               {/* Logo */}
-
               <div className="ml-4 flex lg:ml-0">
                 <span className="sr-only">Your Company</span>
-                <Link to="#">
+                <Link to="/">
                   <img
                     alt=""
                     src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
@@ -264,7 +275,6 @@ export default function Navigation() {
                   />
                 </Link>
               </div>
-
 
               {/* Flyout menus */}
               <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -296,13 +306,11 @@ export default function Navigation() {
                                       src={item.imageSrc}
                                       className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
                                     />
-                                    <a to={item.to} className="mt-6 block font-medium text-gray-900">
+                                    <Link to={item.to} className="mt-6 block font-medium text-gray-900">
                                       <span aria-hidden="true" className="absolute inset-0 z-10" />
                                       {item.name}
-                                    </a>
-                                    <p aria-hidden="true" className="mt-1">
-                                      Shop now
-                                    </p>
+                                    </Link>
+                                    <p aria-hidden="true" className="mt-1">Shop now</p>
                                   </div>
                                 ))}
                               </div>
@@ -319,14 +327,12 @@ export default function Navigation() {
                                     >
                                       {section.items.map((item) => (
                                         <li key={item.name} className="flex">
-                                          <p onClick={() => handleCategoryClick(
-                                            category,
-                                            section,
-                                            item,
-                                            () => { }
-                                          )}
-                                            className='cursor-pointer hover:text-gray-800'
-                                          >{item.name}</p>
+                                          <p
+                                            onClick={() => handleCategoryClick(category, section, item, () => {})}
+                                            className="cursor-pointer hover:text-gray-800"
+                                          >
+                                            {item.name}
+                                          </p>
                                         </li>
                                       ))}
                                     </ul>
@@ -339,14 +345,16 @@ export default function Navigation() {
                       </PopoverPanel>
                     </Popover>
                   ))}
+
+                  {/* ✅ Fixed: was <a> now <Link> */}
                   {nav.pages.map((page) => (
-                    <a
+                    <Link
                       key={page.name}
                       to={page.to}
                       className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                     >
                       {page.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </PopoverGroup>
@@ -354,7 +362,6 @@ export default function Navigation() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {jwt ? (
-                    // ✅ Fix 2: replaced broken Popover.Button with a simple custom dropdown
                     <div className="relative" ref={userMenuRef}>
                       <Avatar
                         onClick={handleUserClick}
@@ -362,7 +369,6 @@ export default function Navigation() {
                       >
                         {userName[0].toUpperCase()}
                       </Avatar>
-
                       {userMenuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                           <div className="py-1">
@@ -381,21 +387,11 @@ export default function Navigation() {
                       )}
                     </div>
                   ) : (
-                    // ✅ Fix 3: Sign in + Create account for guests
                     <>
-                      {/* <button onClick={handleOpen} className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Sign in
-                      </button>
-                      <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                      <button onClick={handleOpen} className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                        Create account
-                      </button> */}
                       <button onClick={() => handleOpen("/signin")} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                         Sign in
                       </button>
-
                       <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-
                       <button onClick={() => handleOpen("/signup")} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                         Create account
                       </button>
@@ -427,7 +423,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      {/* <AuthModal handleClose={handleClose} open={openAuthModal} /> */}
+
       <AuthModal handleClose={handleClose} open={openAuthModal} mode={authMode} />
     </div>
   )
