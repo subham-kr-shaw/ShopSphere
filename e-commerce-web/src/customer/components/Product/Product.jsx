@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogBackdrop,
@@ -23,6 +23,8 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
+import { useDispatch } from "react-redux";
+import { findproducts } from '../../../state/product/Action';
 
 
 function classNames(...classes) {
@@ -33,28 +35,45 @@ export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
 
-  // const handlefilter = (value, sectionid) => {
-  //   const searchparams = new URLSearchParams(location.search);
-  //   let filtervalue = searchparams.getAll(sectionid);
+  const decodestring=decodeURIComponent(location.search);
+  const searchparams = new URLSearchParams(decodestring);
+  const colorvalue=searchparams.get("color");
+  const sizevalue=searchparams.get("size");
+  const pricevalue=searchparams.get("price");
+  const sortvalue=searchparams.get("sort");
+  const pagenumber=searchparams.get("page")||1;
+  const stock=searchparams.get("stock");
+  const discount=searchparams.get("discount");
+  const dispatch=useDispatch();
 
-  //   if (filtervalue.length > 0 && filtervalue[0].split(",").includes(value)) {
-  //     filtervalue = filtervalue[0].split(",").filter((item) => item !== value);
-  //     if (filtervalue.length === 0) {
-  //       searchparams.delete(sectionid);
-  //     }
-  //     else {
-  //       filtervalue.push(value);
-  //     }
+  useEffect(()=>{
+    const[minprice,maxprice]=pricevalue===null?[0,0]:pricevalue.split("-").map(Number);
+   const data={
+     category:params.levelthree||"",
+    colors:colorvalue||[],
+    sizes:sizevalue||[],
+    minprice,
+    maxprice,
+    mindiscount:discount||0,
+    sort:sortvalue||"price_low",
+    pagenumber:pagenumber-1,
+    pagesize:10,
+    stock:stock
+   }
+   dispatch(findproducts(data))
 
-  //     if (filtervalue.length > 0) {
-  //       searchparams.set(sectionid);
-  //       const query = searchparams.toString();
-  //       navigate({ search: `?${query}` });
-  //     }
-  //   }
-  // }
-  const searchparams = new URLSearchParams(location.search);
+  },[params.levelthree,
+  colorvalue,
+  sizevalue,
+  pricevalue,
+  sortvalue,
+  pagenumber,
+  stock,
+  discount]
+)
+
   const handlefilter = (value, sectionid) => {
     const searchparams = new URLSearchParams(location.search);
 
@@ -78,6 +97,21 @@ export default function Product() {
     navigate(`${location.pathname}?${searchparams.toString()}`);
   };
 
+const handleRadioFilter = (value, sectionid) => {
+  const searchparams = new URLSearchParams(location.search);
+
+  const current = searchparams.get(sectionid);
+
+  if (current === value) {
+    // ✅ SAME value clicked again → REMOVE
+    searchparams.delete(sectionid);
+  } else {
+    // ✅ New value → SET
+    searchparams.set(sectionid, value);
+  }
+
+  navigate(`${location.pathname}?${searchparams.toString()}`);
+};
 
   return (
     <div className="bg-white">
@@ -323,7 +357,11 @@ export default function Product() {
                       <div className="space-y-4">
 
                         <FormControl>
-                          <RadioGroup name={section.id}>
+                          {/* <RadioGroup name={section.id}> */}
+                          <RadioGroup
+                            name={section.id}
+                            value={searchparams.get(section.id) || ""}
+                          >
 
                             {section.options.map((option) => (
                               <FormControlLabel
@@ -331,6 +369,8 @@ export default function Product() {
                                 value={option.value}
                                 control={<Radio />}
                                 label={option.label}
+                                onClick={() =>
+                                  handleRadioFilter(option.value, section.id)}
                               />
                             ))}
 

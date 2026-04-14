@@ -49,7 +49,7 @@ export default function Navigation() {
   const jwt = auth.jwt || localStorage.getItem("jwt");
   const userName = auth.user?.firstname || auth.user?.name||'U';
 
-  console.log(userName);
+ 
 
   // 1. update import
 

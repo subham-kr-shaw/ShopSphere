@@ -15,8 +15,12 @@ export const findproducts = (reqdata) => async (dispatch) => {
         pagenumber
     } = reqdata
     try {
-        const { data } = api.get(`/api/products/color=${colors}&size=${sizes}&minprice=${minprice}
-            &maxprice=${maxprice}&category=${category}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`)
+        // const { data } =await api.get(`/api/products?color=${colors}&size=${sizes}&minprice=${minprice}
+        //     &maxprice=${maxprice}&category=${category}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`)
+        const { data } = await api.get(
+            `/api/products?color=${colors}&size=${sizes}&minprice=${minprice}&maxprice=${maxprice}&category=${category}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`
+        );
+        console.log("productdata", data);
         dispatch({ type: FIND_PRODUCTS_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: FIND_PRODUCTS_FAILURE, payload: error.message });
@@ -26,7 +30,7 @@ export const findproducts = (reqdata) => async (dispatch) => {
 export const findproductsbyid = (reqdata) => async (dispatch) => {
     const { productid } = reqdata;
     try {
-        const { data } = api.get(`/api/products/id/${productid}`)
+        const { data } = await api.get(`/api/products/id/${productid}`)
         dispatch({ type: FIND_PRODUCT_BY_ID_SUCCESS, payload: data });
     }
     catch (error) {
