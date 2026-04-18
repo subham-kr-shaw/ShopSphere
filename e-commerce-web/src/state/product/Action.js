@@ -27,14 +27,14 @@ export const findproducts = (reqdata) => async (dispatch) => {
 
     }
 }
-export const findproductsbyid = (reqdata) => async (dispatch) => {
-    const { productid } = reqdata;
+export const findproductsbyid = (productid) => async (dispatch) => {
+    // ✅ receive it directly, no destructuring
     try {
-        const { data } = await api.get(`/api/products/id/${productid}`)
+        const {data} = await api.get(`/api/products/id/${productid}`)
+        console.log("data", data);
         dispatch({ type: FIND_PRODUCT_BY_ID_SUCCESS, payload: data });
     }
     catch (error) {
         dispatch({ type: FIND_PRODUCT_BY_ID_FAILURE, payload: error.message });
-
     }
 }

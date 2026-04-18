@@ -9,6 +9,7 @@ import Webstepper from '../customer/components/userdetail/Webstepper'
 import Order from '../customer/components/order/Order'
 import Orderhistorydetails from '../customer/components/order/Orderhistorydetails'
 import Navigation from '../customer/components/navigation/Navigation'
+import Cartpage from '../customer/components/cart/Cartpage'
 
 const Customerroutes = () => {
     return (
@@ -20,7 +21,7 @@ const Customerroutes = () => {
                 <Route path='/signin' element={<Homepage />}></Route>
                 <Route path='/signup' element={<Homepage />}></Route>
                 <Route path='/' element={<Homepage />}></Route>
-                <Route path='/cart' element={<Cart />}></Route>
+                <Route path='/cart' element={<Cartpage/>}></Route>
                 <Route path='/:levelone/:leveltwo/:levelthree' element={<Product/>}></Route>
                 <Route path='/:product/:productid' element={<Productdetails/>}></Route>
                 <Route path='/checkout' element={<Webstepper/>}></Route>

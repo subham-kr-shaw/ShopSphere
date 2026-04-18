@@ -1,7 +1,7 @@
 import { FIND_PRODUCT_BY_ID_FAILURE, FIND_PRODUCT_BY_ID_REQUEST, FIND_PRODUCT_BY_ID_SUCCESS, FIND_PRODUCTS_FAILURE, FIND_PRODUCTS_REQUEST, FIND_PRODUCTS_SUCCESS } from "./ActionType";
 
 const initalstate = {
-    product: [],
+    products: [],
     product: null,
     loading: false,
     error: null
@@ -15,7 +15,7 @@ export const customerProductReducer = (state = initalstate, action) => {
         case FIND_PRODUCTS_SUCCESS:
             return { ...state, loading: false, error: null, products: action.payload }
         case FIND_PRODUCT_BY_ID_SUCCESS:
-            return { ...state, loading: false, error: null, products: action.payload }
+            return { ...state, loading: false, error: null, product: action.payload }
         case FIND_PRODUCTS_FAILURE:
         case FIND_PRODUCT_BY_ID_FAILURE:
             return { ...state, loading: false, error: action.payload }

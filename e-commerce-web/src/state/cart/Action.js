@@ -4,7 +4,8 @@ import { ADD_ITEM_TO_CART_FAILURE, ADD_ITEM_TO_CART_REQUEST, ADD_ITEM_TO_CART_SU
 export const additemtocart=(reqdata)=>async(dispatch)=>{
     dispatch({type:ADD_ITEM_TO_CART_REQUEST})
     try {
-        const {data}=await api.put("/api/cart/add",reqdata.data)
+        const {data}=await api.put("/api/cart/add",reqdata)
+        console.log(data);
         dispatch({type:ADD_ITEM_TO_CART_SUCCESS,payload:data})
     } catch (error) {
         dispatch({type:ADD_ITEM_TO_CART_FAILURE,payload:error.message})
@@ -12,11 +13,12 @@ export const additemtocart=(reqdata)=>async(dispatch)=>{
 }
 
 
-export const removecartitem=(reqdata)=>async(dispatch)=>{
+export const removecartitem=(cartitemid)=>async(dispatch)=>{
     dispatch({type:REMOVE_CART_ITEM_REQUEST})
     try {
-        const {data}=await api.delete(`/api/cart_items/${reqdata.cartitemid}`)
-        dispatch({type:REMOVE_CART_ITEM_SUCCESS,payload:data})
+        const {data}=await api.delete(`/api/cart_items/${cartitemid}`)
+        // const {data}=await api.delete(`/api/cart_items/${reqdata.cartitemid}`)
+        dispatch({type:REMOVE_CART_ITEM_SUCCESS,payload:cartitemid})
     } catch (error) {
         dispatch({type:REMOVE_CART_ITEM_FAILURE,payload:error.message})
     }
@@ -26,7 +28,9 @@ export const removecartitem=(reqdata)=>async(dispatch)=>{
 export const updatecartitem=(reqdata)=>async(dispatch)=>{
     dispatch({type:UPDATE_CART_ITEM_REQUEST})
     try {
-        const {data}=await api.delete(`/api/cart_items/${reqdata.cartitemid}`)
+        // const {data}=await api.delete(`/api/cart_items/${reqdata.cartitemid}`)
+        const {data} = await api.put(`/api/cart_items/${reqdata.cartitemid}`, reqdata.data)
+        console.log("update",data)
         dispatch({type:UPDATE_CART_ITEM_SUCCESS,payload:data})
     } catch (error) {
         dispatch({type:UPDATE_CART_ITEM_FAILURE,payload:error.message})
@@ -34,10 +38,11 @@ export const updatecartitem=(reqdata)=>async(dispatch)=>{
 }
 
 
-export const get=()=>async(dispatch)=>{
+export const getcart=()=>async(dispatch)=>{
     dispatch({type:GET_CART_REQUEST})
     try {
-        const {data}=api.delete(`/api/cart`)
+        const {data}=await api.get(`/api/cart`)
+        console.log("cart data ",data);
         dispatch({type:GET_CART_SUCCESS,payload:data})
     } catch (error) {
         dispatch({type:GET_CART_FAILURE,payload:error.message})

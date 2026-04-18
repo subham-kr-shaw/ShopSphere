@@ -1,8 +1,16 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
-const Pricedetails = ({ price, discount, total }) => {
+const Pricedetails = () => {
   const navigate=useNavigate();
+
+   const {cart}=useSelector(store=>store.cart);
+   const c=cart;
+  console.log("items",c)
+  console.log("items discount",cart?.cart?.discount);
+
+
   const handlecheckout=()=>{
     navigate(`/checkout?step=2`)//webstepper.jsx
   }
@@ -11,11 +19,11 @@ const Pricedetails = ({ price, discount, total }) => {
       <div className="text-center font-semibold mb-3">Price Details</div>
       <div className="flex justify-between py-2">
         <div className="text-sm text-gray-600">Price</div>
-        <div className="text-sm text-gray-800">₹{price || 4697}</div>
+        <div className="text-sm text-gray-800">₹{cart?.cart?.totalprice}</div>
       </div>
       <div className="flex justify-between py-2">
         <div className="text-sm text-gray-600">Discount</div>
-        <div className="text-sm text-green-600">-₹{discount || 3617}</div>
+        <div className="text-sm text-green-600">-₹{cart?.cart?.discount}</div>
       </div>
       <div className="flex justify-between py-2">
         <div className="text-sm text-gray-600">Delivery</div>
@@ -23,7 +31,7 @@ const Pricedetails = ({ price, discount, total }) => {
       </div>
       <div className="flex justify-between py-3 border-t border-gray-100 mt-3">
         <div className="text-base font-medium">Total Amount</div>
-        <div className="text-base font-semibold text-gray-800">₹{total || 1080}</div>
+        <div className="text-base font-semibold text-gray-800">₹{cart?.cart?.totaldiscountedprice}</div>
       </div>
 
       <button

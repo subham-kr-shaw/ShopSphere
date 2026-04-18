@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import Pagination from '@mui/material/Pagination';
 import {
   Dialog,
   DialogBackdrop,
@@ -17,14 +18,14 @@ import {
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { sortOptions, filters, singleFilters } from './productdata'
-import Homesectioncard from '../homesectioncard/Homesectioncard'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { findproducts } from '../../../state/product/Action';
+import Productcard from './Productcard';
 
 
 function classNames(...classes) {
@@ -37,42 +38,44 @@ export default function Product() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const decodestring=decodeURIComponent(location.search);
+  const decodestring = decodeURIComponent(location.search);
   const searchparams = new URLSearchParams(decodestring);
-  const colorvalue=searchparams.get("color");
-  const sizevalue=searchparams.get("size");
-  const pricevalue=searchparams.get("price");
-  const sortvalue=searchparams.get("sort");
-  const pagenumber=searchparams.get("page")||1;
-  const stock=searchparams.get("stock");
-  const discount=searchparams.get("discount");
-  const dispatch=useDispatch();
+  const colorvalue = searchparams.get("color");
+  const sizevalue = searchparams.get("size");
+  const pricevalue = searchparams.get("price");
+  const sortvalue = searchparams.get("sort");
+  const pagenumber = searchparams.get("page") || 1;
+  const stock = searchparams.get("stock");
+  const discount = searchparams.get("discount");
+  const dispatch = useDispatch();
+  const { products } = useSelector(store => store.product);
+  console.log("ur product is", products);
 
-  useEffect(()=>{
-    const[minprice,maxprice]=pricevalue===null?[0,0]:pricevalue.split("-").map(Number);
-   const data={
-     category:params.levelthree||"",
-    colors:colorvalue||[],
-    sizes:sizevalue||[],
-    minprice,
-    maxprice,
-    mindiscount:discount||0,
-    sort:sortvalue||"price_low",
-    pagenumber:pagenumber-1,
-    pagesize:10,
-    stock:stock
-   }
-   dispatch(findproducts(data))
+  useEffect(() => {
+    const [minprice, maxprice] = pricevalue === null ? [0, 0] : pricevalue.split("-").map(Number);
+    const data = {
+      category: params.levelthree || "",
+      colors: colorvalue || [],
+      sizes: sizevalue || [],
+      minprice,
+      maxprice,
+      mindiscount: discount || 0,
+      sort: sortvalue || "price_low",
+      pagenumber: pagenumber - 1,
+      pagesize: 5,
+      stock: stock
+    }
+    dispatch(findproducts(data))
 
-  },[params.levelthree,
-  colorvalue,
-  sizevalue,
-  pricevalue,
-  sortvalue,
-  pagenumber,
-  stock,
-  discount]
-)
+  }, [params.levelthree,
+    colorvalue,
+    sizevalue,
+    pricevalue,
+    sortvalue,
+    pagenumber,
+    stock,
+    discount]
+  )
 
   const handlefilter = (value, sectionid) => {
     const searchparams = new URLSearchParams(location.search);
@@ -97,21 +100,28 @@ export default function Product() {
     navigate(`${location.pathname}?${searchparams.toString()}`);
   };
 
-const handleRadioFilter = (value, sectionid) => {
-  const searchparams = new URLSearchParams(location.search);
+  const handleRadioFilter = (value, sectionid) => {
+    const searchparams = new URLSearchParams(location.search);
 
-  const current = searchparams.get(sectionid);
+    const current = searchparams.get(sectionid);
 
-  if (current === value) {
-    // ✅ SAME value clicked again → REMOVE
-    searchparams.delete(sectionid);
-  } else {
-    // ✅ New value → SET
-    searchparams.set(sectionid, value);
+    if (current === value) {
+      // ✅ SAME value clicked again → REMOVE
+      searchparams.delete(sectionid);
+    } else {
+      // ✅ New value → SET
+      searchparams.set(sectionid, value);
+    }
+
+    navigate(`${location.pathname}?${searchparams.toString()}`);
+  };
+
+  const handlepagination=(event,value)=>{
+    const searchparams= new URLSearchParams(location.search);
+    searchparams.set("page",value)
+    const query=searchparams.toString();
+    navigate({search:`${query}`})
   }
-
-  navigate(`${location.pathname}?${searchparams.toString()}`);
-};
 
   return (
     <div className="bg-white">
@@ -388,12 +398,23 @@ const handleRadioFilter = (value, sectionid) => {
               {/* Product grid */}
               < div className="lg:col-span-3 w-full cols-span-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3" >
                 <div className='flex flex-wrap justify-center '>
-                  {[1, 2, 3, 4, 5, 6, 7].map((item) => <div className='md:w-[30%] h-[35%] w-[50%] ' key={item}><Homesectioncard width="95%" margin="4" /></div>)}
+                  {/* {products?products?.contents?.map(item => (
+                    <Productcard key={item._id} product={item} />
+                  ))} */}
+                  {products?.product?.contents?.map(item => (
+                    <Productcard key={item._id} product={item} />
+                  ))}
                 </div>
               </div>
             </div >
           </section >
         </main >
+          <section className='w-full m-2'>
+            <div className='flex justify-center'>
+              {/* <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination}/> */}
+              <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination}/>
+            </div>
+          </section>
       </div >
     </div >
   )
