@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // ✅ Correct
 // import { logout } from '../../../state/Auth/Action';
 import { logout, getuser } from '../../../state/Auth/Action';
+import { getcart } from '../../../state/cart/Action'
 
 export default function Navigation() {
   // 1. update import
@@ -35,6 +36,7 @@ export default function Navigation() {
 // 2. add useEffect after your existing useEffect
 
   const [open, setOpen] = useState(false);
+  const [count, setcount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const [openAuthModal, setOpenAuthModal] = useState(false);
@@ -49,7 +51,15 @@ export default function Navigation() {
   const jwt = auth.jwt || localStorage.getItem("jwt");
   const userName = auth.user?.firstname || auth.user?.name||'U';
 
- 
+  // const { cart } = useSelector((store) => store.cart);
+  // useEffect(() => {
+  //   setcount(cart?.cart?.cartitems?.length)
+  // }, [cart])
+  const { cartitems } = useSelector((store) => store.cart);
+
+useEffect(() => {
+  setcount(cartitems?.length || 0)
+}, [cartitems])
 
   // 1. update import
 
@@ -408,16 +418,16 @@ useEffect(() => {
                 </div>
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <Link to="#" className="group -m-2 flex items-center p-2">
+                {jwt&&<div className="ml-4 flow-root lg:ml-6">
+                  <Link to="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
                       className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{count}</span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Link>
-                </div>
+                </div>}
               </div>
             </div>
           </div>
