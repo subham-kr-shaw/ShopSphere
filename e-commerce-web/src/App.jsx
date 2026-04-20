@@ -17,32 +17,17 @@ import { useState } from 'react'
 // import Orderhistorydetails from './customer/components/order/Orderhistorydetails'
 import { Route, Routes } from 'react-router-dom'
 import Customerroutes from './Routers/Customerroutes'
+import Adminroutes from './Routers/Adminroutes'
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <Routes>
          <Route path='/*' element={<Customerroutes/>}></Route>
-         {/* <Route path=''></Route> */}
+         <Route path='/admin/*' element={<Adminroutes/>}></Route>
       </Routes>
-      {/* <CustomCursor /> */}
-      {/* <div className='relative'> */}
-      
-      {/* <div><Address/></div> */}
-      {/* <Webstepper/> */}
-      {/* <Filters/> */}
-      {/* <div><ProductSection/></div> */}
-        {/* <div><Homepage/></div> 
-      <div><Homesection/></div>  */}
-      {/* <Productdetails/> */}
-      {/* <Cartpage/> */}
-      {/* <Orderhistorydetails/> */}
-      {/* <Ordercart/> */}
-      {/* <Userdetails/> */}
-      {/* </div> */}
     </>
   )
 }
