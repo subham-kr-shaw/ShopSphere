@@ -1,128 +1,4 @@
-// const nav = {
-//   categories: [
-//     {
-//       id: 'women',
-//       name: 'Women',
-//       featured: [
-//         {
-//           name: 'New Arrivals',
-//           href: '#',
-//           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
-//           imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-//         },
-//         {
-//           name: 'Basic Tees',
-//           href: '#',
-//           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
-//           imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-//         },
-//       ],
-//       sections: [
-//         {
-//           id: 'clothing',
-//           name: 'Clothing',
-//           items: [
-//             { name: 'Tops', href: '#' },
-//             { name: 'Dresses', href: '#' },
-//             { name: 'Pants', href: '#' },
-//             { name: 'Denim', href: '#' },
-//             { name: 'Sweaters', href: '#' },
-//             { name: 'T-Shirts', href: '#' },
-//             { name: 'Jackets', href: '#' },
-//             { name: 'Activewear', href: '#' },
-//             { name: 'Browse All', href: '#' },
-//           ],
-//         },
-//         {
-//           id: 'accessories',
-//           name: 'Accessories',
-//           items: [
-//             { name: 'Watches', href: '#' },
-//             { name: 'Wallets', href: '#' },
-//             { name: 'Bags', href: '#' },
-//             { name: 'Sunglasses', href: '#' },
-//             { name: 'Hats', href: '#' },
-//             { name: 'Belts', href: '#' },
-//           ],
-//         },
-//         {
-//           id: 'brands',
-//           name: 'Brands',
-//           items: [
-//             { name: 'Full Nelson', href: '#' },
-//             { name: 'My Way', href: '#' },
-//             { name: 'Re-Arranged', href: '#' },
-//             { name: 'Counterfeit', href: '#' },
-//             { name: 'Significant Other', href: '#' },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       id: 'men',
-//       name: 'Men',
-//       featured: [
-//         {
-//           name: 'New Arrivals',
-//           href: '#',
-//           imageSrc:
-//             'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-//           imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
-//         },
-//         {
-//           name: 'Artwork Tees',
-//           href: '#',
-//           imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
-//           imageAlt:
-//             'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
-//         },
-//       ],
-//       sections: [
-//         {
-//           id: 'clothing',
-//           name: 'Clothing',
-//           items: [
-//             { name: 'Tops', href: '#' },
-//             { name: 'Pants', href: '#' },
-//             { name: 'Sweaters', href: '#' },
-//             { name: 'T-Shirts', href: '#' },
-//             { name: 'Jackets', href: '#' },
-//             { name: 'Activewear', href: '#' },
-//             { name: 'Browse All', href: '#' },
-//           ],
-//         },
-//         {
-//           id: 'accessories',
-//           name: 'Accessories',
-//           items: [
-//             { name: 'Watches', href: '#' },
-//             { name: 'Wallets', href: '#' },
-//             { name: 'Bags', href: '#' },
-//             { name: 'Sunglasses', href: '#' },
-//             { name: 'Hats', href: '#' },
-//             { name: 'Belts', href: '#' },
-//           ],
-//         },
-//         {
-//           id: 'brands',
-//           name: 'Brands',
-//           items: [
-//             { name: 'Re-Arranged', href: '#' },
-//             { name: 'Counterfeit', href: '#' },
-//             { name: 'Full Nelson', href: '#' },
-//             { name: 'My Way', href: '#' },
-//           ],
-//         },
-//       ],
-//     },
-//   ],
-//   pages: [
-//     { name: 'Company', href: '#' },
-//     { name: 'Stores', href: '#' },
-//   ],
-// }
-// export default nav;
- const nav = {
+const nav = {
   categories: [
     {
       id: 'women',
@@ -200,17 +76,31 @@
         },
       ],
       sections: [
+        // {
+        //   id: 'clothing',
+        //   name: 'Clothing',
+        //   items: [
+        //     { name: 'Tops', id: 'tops', href: '#' },
+        //     { name: 'Pants', id: 'pants', href: '#' },
+        //     { name: 'Sweaters', id: 'sweaters', href: '#' },
+        //     { name: 'T-Shirts', id: 'tshirts', href: '#' },
+        //     { name: 'Jackets', id: 'jackets', href: '#' },
+        //     { name: 'Activewear', id: 'activewear', href: '#' },
+        //     { name: 'Browse All', id: 'all', href: '#' },
+        //   ],
+        // },
         {
           id: 'clothing',
           name: 'Clothing',
           items: [
-            { name: 'Tops', id: 'tops', href: '#' },
-            { name: 'Pants', id: 'pants', href: '#' },
-            { name: 'Sweaters', id: 'sweaters', href: '#' },
-            { name: 'T-Shirts', id: 'tshirts', href: '#' },
-            { name: 'Jackets', id: 'jackets', href: '#' },
-            { name: 'Activewear', id: 'activewear', href: '#' },
-            { name: 'Browse All', id: 'all', href: '#' },
+            { name: 'Mens Kurta', id: 'mens_kurta', to: '/men/clothing/mens_kurta' }, // ✅ matches DB exactly
+            { name: 'Tops', id: 'tops', to: '/men/clothing/tops' },
+            { name: 'Pants', id: 'pants', to: '/men/clothing/pants' },
+            { name: 'Sweaters', id: 'sweaters', to: '/men/clothing/sweaters' },
+            { name: 'T-Shirts', id: 'tshirts', to: '/men/clothing/tshirts' },
+            { name: 'Jackets', id: 'jackets', to: '/men/clothing/jackets' },
+            { name: 'Activewear', id: 'activewear', to: '/men/clothing/activewear' },
+            { name: 'Browse All', id: 'all', to: '/men/clothing/all' },
           ],
         },
         {
@@ -245,4 +135,3 @@
 }
 
 export default nav;
-

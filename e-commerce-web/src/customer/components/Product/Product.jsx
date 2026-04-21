@@ -51,31 +51,85 @@ export default function Product() {
   const { products } = useSelector(store => store.product);
   console.log("ur product is", products);
 
+  // useEffect(() => {
+  //   const [minprice, maxprice] = pricevalue === null ? [0, 0] : pricevalue.split("-").map(Number);
+  //   const data = {
+  //     category: params.item || "",
+  //     colors: colorvalue || [],
+  //     sizes: sizevalue || [],
+  //     minprice,
+  //     maxprice,
+  //     mindiscount: discount || 0,
+  //     sort: sortvalue || "price_low",
+  //     pagenumber: pagenumber - 1,
+  //     pagesize: 5,
+  //     stock: stock
+  //   }
+  //   dispatch(findproducts(data))
+
+  // }, [params.item,
+  //   colorvalue,
+  //   sizevalue,
+  //   pricevalue,
+  //   sortvalue,
+  //   pagenumber,
+  //   stock,
+  //   discount]
+  // )
+  // useEffect(() => {
+  //   const [minprice, maxprice] = pricevalue === null ? [0, 0] : pricevalue.split("-").map(Number);
+  //   console.log("🔴 URL params:", params);  // add this
+  //   console.log("🔴 item value:", params.item);
+  //   const data = {
+  //     category: params.item || "",        // ✅ was params.levelthree
+  //     colors: colorvalue || [],
+  //     sizes: sizevalue || [],
+  //     minprice,
+  //     maxprice,
+  //     mindiscount: discount || 0,
+  //     sort: sortvalue || "price_low",
+  //     pagenumber: pagenumber - 1,
+  //     pagesize: 5,
+  //     stock: stock
+  //   }
+  //   dispatch(findproducts(data))
+  // }, [
+  //   params.category,   // ✅ updated deps
+  //   params.section,
+  //   params.item,
+  //   colorvalue,
+  //   sizevalue,
+  //   pricevalue,
+  //   sortvalue,
+  //   pagenumber,
+  //   stock,
+  //   discount
+  // ])
   useEffect(() => {
     const [minprice, maxprice] = pricevalue === null ? [0, 0] : pricevalue.split("-").map(Number);
     const data = {
-      category: params.levelthree || "",
-      colors: colorvalue || [],
-      sizes: sizevalue || [],
-      minprice,
-      maxprice,
-      mindiscount: discount || 0,
-      sort: sortvalue || "price_low",
-      pagenumber: pagenumber - 1,
-      pagesize: 5,
-      stock: stock
+        category: params.levelthree || "",  // ✅ matches route /:levelone/:leveltwo/:levelthree
+        colors: colorvalue || [],
+        sizes: sizevalue || [],
+        minprice,
+        maxprice,
+        mindiscount: discount || 0,
+        sort: sortvalue || "price_low",
+        pagenumber: pagenumber - 1,
+        pagesize: 5,
+        stock: stock
     }
     dispatch(findproducts(data))
-
-  }, [params.levelthree,
+}, [
+    params.levelthree,  // ✅ matches route
     colorvalue,
     sizevalue,
     pricevalue,
     sortvalue,
     pagenumber,
     stock,
-    discount]
-  )
+    discount
+])
 
   const handlefilter = (value, sectionid) => {
     const searchparams = new URLSearchParams(location.search);
@@ -116,11 +170,11 @@ export default function Product() {
     navigate(`${location.pathname}?${searchparams.toString()}`);
   };
 
-  const handlepagination=(event,value)=>{
-    const searchparams= new URLSearchParams(location.search);
-    searchparams.set("page",value)
-    const query=searchparams.toString();
-    navigate({search:`${query}`})
+  const handlepagination = (event, value) => {
+    const searchparams = new URLSearchParams(location.search);
+    searchparams.set("page", value)
+    const query = searchparams.toString();
+    navigate({ search: `${query}` })
   }
 
   return (
@@ -409,12 +463,12 @@ export default function Product() {
             </div >
           </section >
         </main >
-          <section className='w-full m-2'>
-            <div className='flex justify-center'>
-              {/* <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination}/> */}
-              <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination}/>
-            </div>
-          </section>
+        <section className='w-full m-2'>
+          <div className='flex justify-center'>
+            {/* <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination}/> */}
+            <Pagination count={products?.product?.totalpages} color="secondary" onChange={handlepagination} />
+          </div>
+        </section>
       </div >
     </div >
   )

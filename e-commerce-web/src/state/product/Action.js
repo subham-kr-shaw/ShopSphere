@@ -15,10 +15,9 @@ export const findproducts = (reqdata) => async (dispatch) => {
         pagenumber
     } = reqdata
     try {
-        // const { data } =await api.get(`/api/products?color=${colors}&size=${sizes}&minprice=${minprice}
-        //     &maxprice=${maxprice}&category=${category}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`)
         const { data } = await api.get(
-            `/api/products?color=${colors}&size=${sizes}&minprice=${minprice}&maxprice=${maxprice}&category=${category}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`
+            `/api/products?cat=${category}&color=${colors}&size=${sizes}&minprice=${minprice}&maxprice=${maxprice}&stock=${stock}&sort=${sort}&pagenumber=${pagenumber}&pagesize=${pagesize}&mindiscount=${mindiscount}`
+
         );
         console.log("productdata", data);
         dispatch({ type: FIND_PRODUCTS_SUCCESS, payload: data });
@@ -28,9 +27,9 @@ export const findproducts = (reqdata) => async (dispatch) => {
     }
 }
 export const findproductsbyid = (productid) => async (dispatch) => {
-    // ✅ receive it directly, no destructuring
+   
     try {
-        const {data} = await api.get(`/api/products/id/${productid}`)
+        const { data } = await api.get(`/api/products/id/${productid}`)
         console.log("data", data);
         dispatch({ type: FIND_PRODUCT_BY_ID_SUCCESS, payload: data });
     }
