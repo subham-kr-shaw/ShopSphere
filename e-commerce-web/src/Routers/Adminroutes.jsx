@@ -17,7 +17,7 @@
 
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Admin from '../admin/component/admin'
+import Admin from '../admin/component/Admin'
 import ProtectedRoute from '../customer/components/protected/ProtectedRoute'
 
 const Adminroutes = () => {
