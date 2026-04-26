@@ -8,7 +8,7 @@ import {
     GET_PAYMENTS_FAILURE,
 } from "./ActionType";
 
-const API_URL = "http://localhost:5454";
+const API_URL = "https://shopsphere-backend-oe5a.onrender.com"
 
 const gettoken = () => localStorage.getItem("jwt");
 

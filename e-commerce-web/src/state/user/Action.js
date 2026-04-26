@@ -5,7 +5,7 @@ import {
     GET_ALL_USERS_FAILURE,
 } from "./ActionType";
 
-const API_URL = "http://localhost:5454";
+const API_URL = "https://shopsphere-backend-oe5a.onrender.com";
 
 export const getallusers = () => async (dispatch) => {
     dispatch({ type: GET_ALL_USERS_REQUEST });

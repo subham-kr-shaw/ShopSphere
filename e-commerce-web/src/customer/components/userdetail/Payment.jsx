@@ -438,7 +438,7 @@ const Payment = () => {
                         </div>
                     </div>
 
-                    {paymentmode === 'online' && (
+                    {/* {paymentmode === 'online' && (
                         <div className="mt-5 flex flex-col items-center gap-3 p-5 bg-gray-50 border border-dashed border-indigo-300 rounded-xl">
                             <p className="text-sm font-semibold text-gray-700">
                                 Scan QR to Pay ₹{totaldiscountedprice}
@@ -446,6 +446,25 @@ const Payment = () => {
                             <div className="w-48 h-48 bg-gray-100 rounded-xl flex flex-col items-center justify-center border border-gray-300">
                                 <QrCodeIcon sx={{ fontSize: 56, color: '#d1d5db' }} />
                                 <p className="text-xs text-gray-400 mt-1">QR Code coming soon</p>
+                            </div>
+                            <p className="text-xs text-gray-400 text-center">
+                                After payment, click "Place Order" to confirm
+                            </p>
+                        </div>
+                    )} */}
+
+                    {paymentmode === 'online' && (
+                        <div className="mt-5 flex flex-col items-center gap-3 p-5 bg-gray-50 border border-dashed border-indigo-300 rounded-xl">
+                            <p className="text-sm font-semibold text-gray-700">
+                                Scan QR to Pay ₹{totaldiscountedprice}
+                            </p>
+                            {/* ✅ increased size */}
+                            <div className="w-100 h-80 rounded-xl overflow-hidden border border-gray-300">
+                                <img
+                                    src="/qr-code.jpeg"
+                                    alt="Payment QR Code"
+                                    className="w-full h-full object-contain"
+                                />
                             </div>
                             <p className="text-xs text-gray-400 text-center">
                                 After payment, click "Place Order" to confirm
