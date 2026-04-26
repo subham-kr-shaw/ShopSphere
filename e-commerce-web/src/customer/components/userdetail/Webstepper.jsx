@@ -1,101 +1,202 @@
 
+// import * as React from 'react';
+// import { useLocation } from "react-router-dom";
+// import Deliveryaddress from './Deliveryaddress';
+// import Ordersummary from './Ordersummary';
+// import Payment from './Payment';
+
+
+
+// export default function Webstepper() {
+//   const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
+//   const location = useLocation();
+//   const querysearch = new URLSearchParams(location.search);
+//   const step = Number(querysearch.get("step"));
+
+//   // step=1 → Login active (0 completed)
+//   // step=2 → Delivery Address active (1 completed)
+//   // step=3 → Order Summary active (2 completed)
+//   // step=4 → Payment active (3 completed)
+//   const activeIndex = step - 1;
+
+//   return (
+//     <div className='px-4 sm:px-10 lg:px-20 py-4'>
+
+//       {/* Stepper */}
+//       <div className='flex flex-col w-full'>
+
+//         {/* Top row: circles + lines only */}
+//         <div className='flex items-center w-full'>
+//           {steps.map((label, index) => {
+//             const isCompleted = index < activeIndex;
+//             const isActive = index === activeIndex;
+
+//             return (
+//               <div key={label} className='flex items-center flex-1 last:flex-none'>
+
+//                 {/* Circle */}
+//                 <div
+//                   className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0
+//                     ${isCompleted || isActive
+//                       ? 'bg-indigo-600 text-white'
+//                       : 'bg-gray-200 text-gray-500'
+//                     }`}
+//                 >
+//                   {isCompleted ? (
+//                     <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 20 20" fill="currentColor">
+//                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clipRule="evenodd" />
+//                     </svg>
+//                   ) : (
+//                     index + 1
+//                   )}
+//                 </div>
+
+//                 {/* Connector line */}
+//                 {index < steps.length - 1 && (
+//                   <div className={`flex-1 h-[2px] mx-1 sm:mx-2 
+//                     ${isCompleted ? 'bg-indigo-600' : 'bg-gray-200'}`}
+//                   />
+//                 )}
+
+//               </div>
+//             );
+//           })}
+//         </div>
+
+//         {/* Bottom row: labels only */}
+//         <div className='flex items-start w-full mt-1'>
+//           {steps.map((label, index) => {
+//             const isCompleted = index < activeIndex;
+//             const isActive = index === activeIndex;
+
+//             return (
+//               <div key={label} className='flex-1 last:flex-none flex justify-center'>
+//                 <span className={`hidden sm:block text-xs text-center w-full leading-tight px-1
+//                   ${isCompleted || isActive ? 'text-indigo-600 font-semibold' : 'text-gray-400'}`}>
+//                   {label}
+//                 </span>
+//                 {isActive && (
+//                   <span className='block sm:hidden text-xs text-indigo-600 font-semibold text-center leading-tight'>
+//                     {label}
+//                   </span>
+//                 )}
+//               </div>
+//             );
+//           })}
+//         </div>
+
+//       </div>
+
+//       {/* Step Content */}
+//       <div className='mt-4 sm:mt-6'>
+//         {step == 2 && <Deliveryaddress />}
+//         {step == 3 && <Ordersummary />}
+//         {step == 4 && < Payment/>}
+//       </div>
+
+//     </div>
+//   );
+// }
 import * as React from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 import Deliveryaddress from './Deliveryaddress';
 import Ordersummary from './Ordersummary';
 import Payment from './Payment';
 
-
-
 export default function Webstepper() {
-  const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
-  const location = useLocation();
-  const querysearch = new URLSearchParams(location.search);
-  const step = Number(querysearch.get("step"));
+    const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
+    const location = useLocation();
+    const navigate = useNavigate();
+    const querysearch = new URLSearchParams(location.search);
+    const step = Number(querysearch.get("step"));
+    const activeIndex = step - 1;
 
-  // step=1 → Login active (0 completed)
-  // step=2 → Delivery Address active (1 completed)
-  // step=3 → Order Summary active (2 completed)
-  // step=4 → Payment active (3 completed)
-  const activeIndex = step - 1;
+    // ✅ warn before refresh/tab close
+    useEffect(() => {
+        const handlebeforeunload = (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        };
+        window.addEventListener('beforeunload', handlebeforeunload);
+        return () => window.removeEventListener('beforeunload', handlebeforeunload);
+    }, []);
 
-  return (
-    <div className='px-4 sm:px-10 lg:px-20 py-4'>
+    // ✅ warn before browser back button
+    useEffect(() => {
+        const handlepopstate = () => {
+            const confirmed = window.confirm(
+                "Are you sure you want to leave the checkout? Your progress will be lost."
+            );
+            if (confirmed) {
+                navigate('/cart');
+            } else {
+                // ✅ push state back to prevent actually going back
+                window.history.pushState(null, '', location.pathname + location.search);
+            }
+        };
+        // ✅ push a state so popstate fires on back button
+        window.history.pushState(null, '', location.pathname + location.search);
+        window.addEventListener('popstate', handlepopstate);
+        return () => window.removeEventListener('popstate', handlepopstate);
+    }, [location]);
 
-      {/* Stepper */}
-      <div className='flex flex-col w-full'>
+    return (
+        <div className='px-4 sm:px-10 lg:px-20 py-4'>
 
-        {/* Top row: circles + lines only */}
-        <div className='flex items-center w-full'>
-          {steps.map((label, index) => {
-            const isCompleted = index < activeIndex;
-            const isActive = index === activeIndex;
-
-            return (
-              <div key={label} className='flex items-center flex-1 last:flex-none'>
-
-                {/* Circle */}
-                <div
-                  className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0
-                    ${isCompleted || isActive
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-200 text-gray-500'
-                    }`}
-                >
-                  {isCompleted ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    index + 1
-                  )}
+            {/* Stepper */}
+            <div className='flex flex-col w-full'>
+                <div className='flex items-center w-full'>
+                    {steps.map((label, index) => {
+                        const isCompleted = index < activeIndex;
+                        const isActive = index === activeIndex;
+                        return (
+                            <div key={label} className='flex items-center flex-1 last:flex-none'>
+                                <div className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0
+                                    ${isCompleted || isActive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500'}`}
+                                >
+                                    {isCompleted ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clipRule="evenodd" />
+                                        </svg>
+                                    ) : (index + 1)}
+                                </div>
+                                {index < steps.length - 1 && (
+                                    <div className={`flex-1 h-[2px] mx-1 sm:mx-2 ${isCompleted ? 'bg-indigo-600' : 'bg-gray-200'}`} />
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
+                <div className='flex items-start w-full mt-1'>
+                    {steps.map((label, index) => {
+                        const isCompleted = index < activeIndex;
+                        const isActive = index === activeIndex;
+                        return (
+                            <div key={label} className='flex-1 last:flex-none flex justify-center'>
+                                <span className={`hidden sm:block text-xs text-center w-full leading-tight px-1
+                                    ${isCompleted || isActive ? 'text-indigo-600 font-semibold' : 'text-gray-400'}`}>
+                                    {label}
+                                </span>
+                                {isActive && (
+                                    <span className='block sm:hidden text-xs text-indigo-600 font-semibold text-center'>
+                                        {label}
+                                    </span>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
 
-                {/* Connector line */}
-                {index < steps.length - 1 && (
-                  <div className={`flex-1 h-[2px] mx-1 sm:mx-2 
-                    ${isCompleted ? 'bg-indigo-600' : 'bg-gray-200'}`}
-                  />
-                )}
-
-              </div>
-            );
-          })}
+            {/* Step Content */}
+            <div className='mt-4 sm:mt-6'>
+                {step === 2 && <Deliveryaddress />}
+                {step === 3 && <Ordersummary />}
+                {step === 4 && <Payment />}
+            </div>
         </div>
-
-        {/* Bottom row: labels only */}
-        <div className='flex items-start w-full mt-1'>
-          {steps.map((label, index) => {
-            const isCompleted = index < activeIndex;
-            const isActive = index === activeIndex;
-
-            return (
-              <div key={label} className='flex-1 last:flex-none flex justify-center'>
-                <span className={`hidden sm:block text-xs text-center w-full leading-tight px-1
-                  ${isCompleted || isActive ? 'text-indigo-600 font-semibold' : 'text-gray-400'}`}>
-                  {label}
-                </span>
-                {isActive && (
-                  <span className='block sm:hidden text-xs text-indigo-600 font-semibold text-center leading-tight'>
-                    {label}
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-      </div>
-
-      {/* Step Content */}
-      <div className='mt-4 sm:mt-6'>
-        {step == 2 && <Deliveryaddress />}
-        {step == 3 && <Ordersummary />}
-        {step == 4 && < Payment/>}
-      </div>
-
-    </div>
-  );
+    );
 }
 
 

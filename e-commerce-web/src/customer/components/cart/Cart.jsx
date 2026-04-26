@@ -130,18 +130,18 @@ const Cart = ({ item }) => {
                     <img src={item?.product?.imageurl} alt="cart" className="w-24 h-28 object-contain rounded-xl" />
                 </div>
                 <div className="flex-1 flex flex-col gap-1">
-                    <div className="text-lg font-semibold">{item.product.title}</div>
+                    <div className="text-lg font-semibold">{item?.product?.title}</div>
                     <div className="text-gray-600 text-sm">
                         {`${item.size}, `}
-                        <span style={{ color: item.product.color?.toLowerCase() }}>
-                            {item.product.color}
+                        <span style={{ color: item?.product?.color?.toLowerCase() }}>
+                            {item?.product?.color}
                         </span>
                     </div>
-                    <div className="text-gray-600 text-sm">{item.product.brand}</div>
+                    <div className="text-gray-600 text-sm">{item?.product?.brand}</div>
                     <div className="flex items-center gap-2">
                         <span className="text-lg font-semibold text-gray-800">₹{displayDiscountedPrice}</span>
                         <span className="text-sm line-through text-gray-500">{displayPrice}</span>
-                        <span className="text-sm font-medium text-green-600">{item.product.discountpercent} %</span>
+                        <span className="text-sm font-medium text-green-600">{item?.product?.discountpercent} %</span>
                     </div>
                 </div>
             </div>

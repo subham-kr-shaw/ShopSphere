@@ -33,10 +33,9 @@ export default function Navigation() {
   // 1. update import
 
 
-// 2. add useEffect after your existing useEffect
+  // 2. add useEffect after your existing useEffect
 
   const [open, setOpen] = useState(false);
-  const [count, setcount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const [openAuthModal, setOpenAuthModal] = useState(false);
@@ -49,7 +48,7 @@ export default function Navigation() {
   // ✅ Read from Redux — reacts instantly on logout/login
   const auth = useSelector(store => store.auth);
   const jwt = auth.jwt || localStorage.getItem("jwt");
-  const userName = auth.user?.firstname || auth.user?.name||'U';
+  const userName = auth.user?.firstname || auth.user?.name || 'U';
 
   // const { cart } = useSelector((store) => store.cart);
   // useEffect(() => {
@@ -57,19 +56,22 @@ export default function Navigation() {
   // }, [cart])
   const { cartitems } = useSelector((store) => store.cart);
 
+  const [count, setcount] = useState( 0);
 useEffect(() => {
-  setcount(cartitems?.length || 0)
-}, [cartitems])
+    setcount(cartitems?.length || 0);
+}, [cartitems]);
+
+// ✅ initialize from localStorage so count shows instantly before API responds
 
   // 1. update import
 
 
-// 2. add useEffect after your existing useEffect
-useEffect(() => {
-  if (jwt) {
-    dispatch(getuser());
-  }
-}, [jwt])
+  // 2. add useEffect after your existing useEffect
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getuser());
+    }
+  }, [jwt])
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -280,7 +282,7 @@ useEffect(() => {
                 <Link to="/">
                   <img
                     alt=""
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                    src="favicon.png"
                     className="h-8 w-auto"
                   />
                 </Link>
@@ -338,7 +340,7 @@ useEffect(() => {
                                       {section.items.map((item) => (
                                         <li key={item.name} className="flex">
                                           <p
-                                            onClick={() => handleCategoryClick(category, section, item, () => {})}
+                                            onClick={() => handleCategoryClick(category, section, item, () => { })}
                                             className="cursor-pointer hover:text-gray-800"
                                           >
                                             {item.name}
@@ -410,15 +412,15 @@ useEffect(() => {
                 </div>
 
                 {/* Search */}
-                <div className="flex lg:ml-6">
+                {/* <div className="flex lg:ml-6">
                   <Link to="#" className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon aria-hidden="true" className="size-6" />
                   </Link>
-                </div>
+                </div> */}
 
                 {/* Cart */}
-                {jwt&&<div className="ml-4 flow-root lg:ml-6">
+                {jwt && <div className="ml-4 flow-root lg:ml-6">
                   <Link to="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
