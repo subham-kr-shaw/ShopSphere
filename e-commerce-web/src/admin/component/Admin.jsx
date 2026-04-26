@@ -18,7 +18,7 @@ import Producttable from './Producttable';
 import Ordertable from './Ordertable';
 import Customertable from './Customertable';
 import Createproductform from './Createproductform.jsx';
-import Profile from './profile.jsx';
+import Profile from './Profile.jsx';
 
 const DRAWER_WIDTH = 220;
 
