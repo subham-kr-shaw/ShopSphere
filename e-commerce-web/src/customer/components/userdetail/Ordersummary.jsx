@@ -72,7 +72,7 @@ import Address from './Address'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Cart from '../cart/Cart'
-import Pricecard from './pricecard'
+import Pricecard from './Pricecard'
 
 const Ordersummary = () => {
     const { cartitems } = useSelector(store => store.cart);
